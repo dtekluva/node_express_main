@@ -1,42 +1,42 @@
 const express = require("express");
-const hbs     = require('hbs');
-const fs      = require('fs')
+const hbs = require("hbs");
+const fs = require("fs");
 
 //git test
-
+const port = process.env.PORT || 3000;
 var app = express();
 
-hbs.registerPartials(__dirname + '/views/partials')
-app.set('view engine', 'hbs');
+hbs.registerPartials(__dirname + "/views/partials");
+app.set("view engine", "hbs");
 
 app.use((req, res, next) => {
   var now = new Date().toString();
   var log = `${now} : ${req.method} ${req.url}`;
 
   console.log(log);
-  fs.appendFile('server.log', log + '\n');
+  fs.appendFile("server.log", log + "\n");
   next();
-})
+});
 
-hbs.registerHelper('screamIt', (text) => {
+hbs.registerHelper("screamIt", text => {
   return text.toUpperCase();
-})
+});
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/static"));
 
 app.get("/", (req, res) => {
-  res.render('home.hbs',{
-    pageTitle: 'Home page',
-    welcomeMessage: 'Welcome to my website',
+  res.render("home.hbs", {
+    pageTitle: "Home page",
+    welcomeMessage: "Welcome to my website",
     currentYear: new Date().getFullYear()
   });
 });
 
 app.get("/about", (req, res) => {
-  res.render('about.hbs',{
-    pageTitle: 'About this page',
-    welcomeMessage: 'Welcome to the about page for today',
+  res.render("about.hbs", {
+    pageTitle: "About this page",
+    welcomeMessage: "Welcome to the about page for today",
     currentYear: new Date().getFullYear()
   });
 });
@@ -62,9 +62,6 @@ app.get("/jason", (req, res) => {
 app.get("/hot", (req, res) => {
   res.send('<h1 style = "color:red;">Mans not hot</h1>');
 });
-
-
-var port = 3000;
 
 app.listen(port, () => {
   console.log("Listening on port", port);
